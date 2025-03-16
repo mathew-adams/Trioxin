@@ -1,4 +1,4 @@
-# **Trioxin (two-four-five)**
+# **Trioxin (2-4-5)**
 An **expression-based rule engine** for model validation, value calculation and model state management in **Blazor** applications.
 
 ## **Overview**
