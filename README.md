@@ -1,6 +1,24 @@
 # **Trioxin (2-4-5)**
 An **expression-based rule engine** for model validation, value calculation and model state management in **Blazor** applications.
 
+## **Example: Expression Calculation with Named Variables**
+### **C# Code**
+```csharp
+var calc = new Calculator((name) => name switch
+{
+    "switch" => true,   // Boolean variable controlling the IF statement
+    "a" => 2,          // Variable 'a' with value 2
+    "b" => 3,          // Variable 'b' with value 3
+    _ => throw new Exception($"Unknown name: {name}")
+});
+
+// Expression: If "switch" is true, evaluate "a + 2"; otherwise, evaluate "b * 3"
+string expression = "IF(switch, a + 2, b * 3)";
+var result = calc.Calculate(expression);
+
+// Output: result = 4 (since "switch" is true, it evaluates "a + 2" => 2 + 2)
+```
+
 ## **Overview**
 Trioxin is a **powerful, declarative validation and calculation engine** designed to work seamlessly with **MudBlazor forms**. By leveraging **expression-based rules**, Trioxin dynamically controls field visibility, enables/disables inputs, and performs real-time calculations—all without requiring manual event handling.
 
@@ -12,7 +30,7 @@ With **Trioxin**, you can:
 
 ---
 
-## **How Trioxin Works**
+## **How Trioxin Model Validation Works**
 Trioxin operates by attaching **rules** to model properties using the `[TrioxinRule]` attribute. These rules define how a field behaves based on other field values.
 
 ### **Supported Rule Types**
