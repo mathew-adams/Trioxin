@@ -2,6 +2,7 @@
 
 An expression calculor for validation of models
 
+## Operations and functions
 | Operator | Description  | Usage                  | Output | Supports multiple arguments | Notes |
 |----------|-------------|------------------------|--------|-----------------------------|-------|
 | +        | Add         | 1 + 2                  | 3      |                             |       |
