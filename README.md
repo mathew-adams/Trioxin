@@ -2,6 +2,154 @@
 
 An expression calculor for validation of models
 
+
+## Blazor MudBlazor Form with Trioxin Validation
+
+### **C# Model Class**
+```csharp
+using Trioxin;
+namespace MudBlazorWebApp1.Models;
+
+public class Mortgage
+{
+    [TrioxinRule(Type = Rule.Required, Rule = "PurchasePrice = 0")]
+    public decimal PurchasePrice { get; set; }
+
+    [TrioxinRule(Type = Rule.Enabled, Rule = "false")]
+    public decimal TransferTaxRate { get; set; } = 0.2M;
+
+    [TrioxinRule(Type = Rule.Calculation, Rule = "PurchasePrice * TransferTaxRate")]
+    public decimal TransferTax { get; set; }
+
+    [TrioxinRule(Type = Rule.Visible, Rule = "PurchasePrice != 0")]
+    [TrioxinRule(Type = Rule.Calculation, Rule = "PurchasePrice + TransferTax")]
+    public decimal Total { get; set; }
+}
+```
+
+### **Blazor Component (Razor)**
+```razor
+@using Models;
+@using Trioxin;
+
+@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <!-- 
+            ==============================================
+            | MUD BLAZOR FORM VALIDATION                 |
+            | A MudBlazor Form can utilize a validation  |
+            | function to invoke the Trioxin rules       |
+            ==============================================
+            -->
+            <MudForm Model="@Mortgage" @ref="form" Validation="ValidateValue">
+
+                <!-- 
+                  ==============================================
+                  | MUD BLAZOR TEXT FIELD PROPERTIES           |
+                  | MudBlazor text fields can utilize the      |
+                  | calculation indexor for the following:     |
+                  |  - Required                                |
+                  |  - Disabled                                |
+                  |  - ReadOnly                                |
+                  ==============================================
+                -->
+                <MudTextField @bind-Value="Mortgage.PurchasePrice"
+                    Required="Calc[nameof(Mortgage.PurchasePrice)].Required"
+                    Disabled="!Calc[nameof(Mortgage.PurchasePrice)].Enabled"
+                    For="@(()=>Mortgage.PurchasePrice)"
+                    Variant="Variant.Outlined"
+                    Label="PurchasePrice" />
+
+                <MudTextField @bind-Value="Mortgage.TransferTaxRate"
+                    For="@(()=>Mortgage.TransferTaxRate)"
+                    Disabled="!Calc[nameof(Mortgage.TransferTaxRate)].Enabled"
+                    Variant="Variant.Outlined"
+                    Label="TransferTaxRate" />
+
+                <MudTextField @bind-Value="Mortgage.TransferTax"
+                    For="@(()=>Mortgage.TransferTax)"
+                    Disabled="!Calc[nameof(Mortgage.TransferTax)].Enabled"
+                    Variant="Variant.Outlined"
+                    Label="TransferTax" />
+
+                <!-- 
+                  ==============================================
+                  | VISIBILITY BASED ON INDEXOR PROPERTY       |
+                  | For visibility, wrap the element in an     |
+                  | IF statement against the indexor property  |
+                  | for Visible                                |
+                  ==============================================
+                -->
+                @if(Calc[nameof(Mortgage.Total)].Visible)
+                {
+                   <MudTextField @bind-Value="Mortgage.Total"
+                        For="@(()=>Mortgage.Total)"
+                        Disabled="!Calc[nameof(Mortgage.Total)].Enabled"
+                        Variant="Variant.Outlined"
+                        Label="Total" />
+                }
+
+            </MudForm>
+            <MudCheckBox Value="@form.IsValid">Is valid</MudCheckBox>
+        </MudPaper>
+        <MudPaper Class="pa-4 mt-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" DropShadow="false" OnClick="@(()=>form.Validate())">Validate</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" DropShadow="false" OnClick="@(()=>form.ResetAsync())" Class="mx-2">Reset</MudButton>
+            <MudButton Variant="Variant.Filled" DropShadow="false" OnClick="@(()=>form.ResetValidation())">Reset Validation</MudButton>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+```
+### **C# Code (Blazor @code Block)**
+```razor
+@code {
+    MudForm form = new();
+    Mortgage Mortgage = new();
+    ModelValidator<Mortgage> Calc;
+
+    protected override void OnInitialized()
+    {
+        // ==============================================
+        // INITIALIZING MODEL VALIDATOR
+        // Initialize the ModelValidator against the model.
+        // Optionally, you can provide a function to retrieve 
+        // additional values by name.
+        // ==============================================
+        Calc = new ModelValidator<Mortgage>((name) =>
+        {
+            if (name == "Mode") return 1;
+            return false;
+        });
+
+        // ==============================================
+        // RUN INITIAL VISIBILITY & ENABLED RULES
+        // Run validation for initial Visibility and Enabled rules
+        // ==============================================
+        Calc.Validate(ref Mortgage);
+    }
+
+    public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, field) =>
+    {
+        // ==============================================
+        // MODEL VALIDATION FUNCTION
+        // Pass the model into the Validation function.
+        // The model is by reference, meaning values will be 
+        // updated based on Calculation rule types.
+        //
+        // Message keys will return for any Required or Errors.
+        // ==============================================
+        Mortgage context = (Mortgage)model;
+        Calc.Validate(ref context);
+        return Calc[field].MessageKeys;
+    };
+}
+```
+
 ## Operations and functions
 | Operator | Description  | Usage                  | Output | Supports multiple arguments | Notes |
 |----------|-------------|------------------------|--------|-----------------------------|-------|
