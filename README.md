@@ -203,7 +203,7 @@ public class Mortgage
 | <=       | Less than or equal to | 3<=3       | True   |                             |       |
 | >=       | Greater than or equal to | 4>=3    | True   |                             |       |
 | =        | Check if two strings are exactly equal, case sensitive | "Hello"="Hello" | True | | |
-| ~=       | Check if two strings are equal, case insensitive | "hello"="HeLLO" | True | | |
+| ~=       | Check if two strings are equal, case insensitive | "hello"~="HeLLO" | True | | |
 | IF       | Evaluate a condition and return either true or false | IF(expression, true_result, false_result) | True result or false result | | |
 | OR       | Check if any of two or more expressions is true | OR(true, false) | True | Yes | |
 | IN       | Check if a value is contained within a list | IN(2, 3, 4, 5, 6) | True | Yes | |
