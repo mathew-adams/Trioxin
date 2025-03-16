@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trioxin", "Trioxin\Trioxin.csproj", "{047D3E49-3A64-4FF1-9254-4212A8603DFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trioxin.Tests", "Trioxin.Tests\Trioxin.Tests.csproj", "{9C085954-FA03-4B3F-A926-ECF6A4B1D05A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{047D3E49-3A64-4FF1-9254-4212A8603DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{047D3E49-3A64-4FF1-9254-4212A8603DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{047D3E49-3A64-4FF1-9254-4212A8603DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{047D3E49-3A64-4FF1-9254-4212A8603DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C085954-FA03-4B3F-A926-ECF6A4B1D05A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C085954-FA03-4B3F-A926-ECF6A4B1D05A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C085954-FA03-4B3F-A926-ECF6A4B1D05A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C085954-FA03-4B3F-A926-ECF6A4B1D05A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
