@@ -1,9 +1,32 @@
-# Trioxin (2-4-5)
+# **Trioxin (two-four-five)**
+An **expression-based rule engine** for model validation, value calculation and model state management in **Blazor** applications.
 
-An expression calculor for validation of models
+## **Overview**
+Trioxin is a **powerful, declarative validation and calculation engine** designed to work seamlessly with **MudBlazor forms**. By leveraging **expression-based rules**, Trioxin dynamically controls field visibility, enables/disables inputs, and performs real-time calculations—all without requiring manual event handling.
 
+With **Trioxin**, you can:
+- **Define validation rules** directly in model properties.
+- **Calculate dependent field values** using expressions.
+- **Control visibility and enable/disable fields** based on dynamic conditions.
+- **Enforce business logic** without writing additional UI logic.
 
-## Blazor MudBlazor Form with Trioxin Validation
+---
+
+## **How Trioxin Works**
+Trioxin operates by attaching **rules** to model properties using the `[TrioxinRule]` attribute. These rules define how a field behaves based on other field values.
+
+### **Supported Rule Types**
+| Rule Type    | Description |
+|-------------|------------|
+| **Required**  | Makes a field mandatory based on a condition. |
+| **Enabled**   | Controls whether a field is enabled or disabled. |
+| **Visible**   | Dynamically shows or hides a field. |
+| **Calculation** | Computes a field value based on an expression. |
+
+---
+
+## **Example: Mortgage Calculation Using Trioxin**
+The following **`Mortgage` model** demonstrates how Trioxin manages required fields, visibility, and calculations.
 
 ### **C# Model Class**
 ```csharp
