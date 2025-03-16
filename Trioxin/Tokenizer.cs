@@ -83,11 +83,11 @@ internal static class Tokenizer
                 if (reader.Peek() == '=')
                 {
                     reader.Read();
-                    _tokens.Add(new Token(TokenType.LessThanOrEqual, "<="));
+                    _tokens.Add(new Token(TokenType.LessThanOrEqual));
                 }
                 else
                 {
-                    _tokens.Add(new Token(TokenType.LessThan, current));
+                    _tokens.Add(new Token(TokenType.LessThan));
                 }
             }
             else if (current == '!')
@@ -96,7 +96,7 @@ internal static class Tokenizer
                 if (reader.Peek() == '=')
                 {
                     reader.Read();
-                    _tokens.Add(new Token(TokenType.NotEquals, "!="));
+                    _tokens.Add(new Token(TokenType.NotEquals));
                 }
                 else throw new Exception($"Unknown expression for !, and next: {reader.Peek()}");
             }
@@ -106,11 +106,11 @@ internal static class Tokenizer
                 if (reader.Peek() == '=')
                 {
                     reader.Read();
-                    _tokens.Add(new Token(TokenType.GreaterThanOrEqual, ">="));
+                    _tokens.Add(new Token(TokenType.GreaterThanOrEqual));
                 }
                 else
                 {
-                    _tokens.Add(new Token(TokenType.GreaterThan, current));
+                    _tokens.Add(new Token(TokenType.GreaterThan));
                 }
             }
             else if(current == '~')
@@ -119,7 +119,7 @@ internal static class Tokenizer
                 if(reader.Peek() == '=')
                 {
                     reader.Read();
-                    _tokens.Add(new Token(TokenType.EqualsInsensitive, "~="));
+                    _tokens.Add(new Token(TokenType.EqualsInsensitive));
                 }
             }
             else if (char.IsLetter(current))
@@ -133,27 +133,27 @@ internal static class Tokenizer
                 {
                     _tokens.Add(operand switch
                     {
-                        var x when x.Equals("IF", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.If, operand),
-                        var x when x.Equals("OR", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Or, operand),
-                        var x when x.Equals("IN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.In, operand),
-                        var x when x.Equals("AND", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.And, operand),
-                        var x when x.Equals("NOT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Not, operand),
-                        var x when x.Equals("MIN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Min, operand),
-                        var x when x.Equals("MAX", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Max, operand),
-                        var x when x.Equals("SUM", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Sum, operand),
-                        var x when x.Equals("AVG", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Avg, operand),
-                        var x when x.Equals("ABS", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Abs, operand),
-                        var x when x.Equals("LEN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Len, operand),
-                        var x when x.Equals("LEFT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Left, operand),
-                        var x when x.Equals("CINT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CInt, operand),
-                        var x when x.Equals("CBOOL", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CBool, operand),
-                        var x when x.Equals("CBYTE", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CByte, operand),
-                        var x when x.Equals("CLONG", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CLong, operand),
-                        var x when x.Equals("RIGHT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Right, operand),
-                        var x when x.Equals("ROUND", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Round, operand),
-                        var x when x.Equals("CSHORT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CShort, operand),
-                        var x when x.Equals("WITHIN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Within, operand),
-                        var x when x.Equals("BETWEEN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Between, operand),
+                        var x when x.Equals("IF", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.If),
+                        var x when x.Equals("OR", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Or),
+                        var x when x.Equals("IN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.In),
+                        var x when x.Equals("AND", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.And),
+                        var x when x.Equals("NOT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Not),
+                        var x when x.Equals("MIN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Min),
+                        var x when x.Equals("MAX", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Max),
+                        var x when x.Equals("SUM", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Sum),
+                        var x when x.Equals("AVG", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Avg),
+                        var x when x.Equals("ABS", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Abs),
+                        var x when x.Equals("LEN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Len),
+                        var x when x.Equals("LEFT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Left),
+                        var x when x.Equals("CINT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CInt),
+                        var x when x.Equals("CBOOL", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CBool),
+                        var x when x.Equals("CBYTE", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CByte),
+                        var x when x.Equals("CLONG", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CLong),
+                        var x when x.Equals("RIGHT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Right),
+                        var x when x.Equals("ROUND", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Round),
+                        var x when x.Equals("CSHORT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CShort),
+                        var x when x.Equals("WITHIN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Within),
+                        var x when x.Equals("BETWEEN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Between),
                         _ => new Token(TokenType.Function, operand)
                     });
                 }

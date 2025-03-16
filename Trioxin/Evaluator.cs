@@ -36,12 +36,12 @@ internal static class Evaluator
                 case TokenType.Number:
                 case TokenType.Boolean:
                 case TokenType.String:
-                case TokenType.Date: stack.Push(token.Value); break;
+                case TokenType.Date: stack.Push(token.Value!); break;
                 case TokenType.Variable:
                     {
                         if (variableResolver == null) throw new Exception("No event for variable value specified");
 
-                        var variable = (string)token.Value;
+                        var variable = (string)token.Value!;
                         switch (variable)
                         {
                             case var x when x.Equals("NOW", StringComparison.OrdinalIgnoreCase): stack.Push(DateTime.Now); break;
@@ -127,7 +127,7 @@ internal static class Evaluator
                     break;
                 case TokenType.Operator:
                     {
-                        if (stack.Count == 1 && stack.Count > 0 && stack.Peek() is decimal dec)
+                        if (stack.Count == 1 && stack.Peek() is decimal dec)
                         {
                             stack.Push(-1 * dec); //Handle negative numbers
                         }
@@ -202,7 +202,6 @@ internal static class Evaluator
                 case TokenType.Avg:
                 case TokenType.Sum:
                     {
-                        string function = (string)token.Value;
                         var args = new List<object>();
                         var argCount = (int)stack.Pop();
                         for (int i = 0; i < argCount; i++)

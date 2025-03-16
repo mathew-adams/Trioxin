@@ -57,4 +57,4 @@ internal enum TokenType
     Function
 }
 
-internal record class Token(TokenType type, object Value);
+internal record class Token(TokenType type, object? Value = null);

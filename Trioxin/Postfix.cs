@@ -96,7 +96,7 @@ internal class Postfix
     /// <returns>A queue of <see cref="Token"/> objects in the processed order.</returns>
     internal static Queue<Token> ConvertFromTokens(List<Token> tokens)
     {
-        var output = new Queue<Token>();
+        var output = new Queue<Token>(tokens.Count+1);
         var operators = new Stack<Token>();
         var functions = new Stack<Function>();
         foreach (var token in tokens)
@@ -139,9 +139,6 @@ internal class Postfix
                     }
                     break;
                 case TokenType.Comma:
-
-                    var currentType = operators.Peek().type;
-
                     // Ensure function arguments are separated correctly
                     while (operators.Count > 0 && operators.Peek().type != TokenType.LeftParenthesis)
                     {
