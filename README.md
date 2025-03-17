@@ -155,10 +155,7 @@ public class Mortgage
 
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, field) =>
     {
-        // Pass the model into the Validation function.
-        // The model is by reference, meaning values will be 
-        // updated based on Calculation rule types.
-        //
+        // Pass the model into the Validation function. The model is by reference, meaning values will be updated based on Calculation rule types.
         // Message keys will return for any Required or Errors.
         Mortgage context = (Mortgage)model;
         Calc.Validate(ref context);
