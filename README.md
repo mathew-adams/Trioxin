@@ -196,5 +196,5 @@ public class Mortgage
 | CSHORT   | Convert to short | CSHORT(200) | <short>200 | | |
 | RIGHT    | Take X number of characters from the right | RIGHT("hello world", 3) | rld | | |
 | ROUND    | Round a number to X digits | ROUND(123.43545454545, 2) | 123.44 | | |
-| WITHIN   | Check if a number is within a range, inclusive of start and end | WITHIN(2, 3, 6) | True | The first position is the search term |
-| BETWEEN  | Check if a number is between a range, exclusive of start and end | BETWEEN(2, 3, 6) | False | The first position is the search term |
+| WITHIN   | Check if a number is within a range, inclusive of start and end | WITHIN(2, 3, 6) | True | | The first position is the search term |
+| BETWEEN  | Check if a number is between a range, exclusive of start and end | BETWEEN(2, 3, 6) | False | | The first position is the search term |
