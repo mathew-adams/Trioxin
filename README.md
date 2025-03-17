@@ -80,24 +80,15 @@ public class Mortgage
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
-            <!-- 
-            ==============================================
-            | MUD BLAZOR FORM VALIDATION                 |
-            | A MudBlazor Form can utilize a validation  |
-            | function to invoke the Trioxin rules       |
-            ==============================================
+            <!--               
+             A MudBlazor Form can utilize a validation function to invoke the Trioxin rules
             -->
             <MudForm Model="@Mortgage" @ref="form" Validation="ValidateValue">
-
-                <!-- 
-                  ==============================================
-                  | MUD BLAZOR TEXT FIELD PROPERTIES           |
-                  | MudBlazor text fields can utilize the      |
-                  | calculation indexor for the following:     |
-                  |  - Required                                |
-                  |  - Disabled                                |
-                  |  - ReadOnly                                |
-                  ==============================================
+                <!--         
+                   MudBlazor text fields can utilize the calculation indexor for the following:     
+                    - Required                                
+                    - Disabled                                
+                    - ReadOnly                                
                 -->
                 <MudTextField @bind-Value="Mortgage.PurchasePrice"
                     Required="Calc[nameof(Mortgage.PurchasePrice)].Required"
@@ -118,13 +109,8 @@ public class Mortgage
                     Variant="Variant.Outlined"
                     Label="TransferTax" />
 
-                <!-- 
-                  ==============================================
-                  | VISIBILITY BASED ON INDEXOR PROPERTY       |
-                  | For visibility, wrap the element in an     |
-                  | IF statement against the indexor property  |
-                  | for Visible                                |
-                  ==============================================
+                <!--    
+                   For visibility, wrap the element in an IF statement against the indexor property for Visible                                
                 -->
                 @if(Calc[nameof(Mortgage.Total)].Visible)
                 {
@@ -155,35 +141,25 @@ public class Mortgage
 
     protected override void OnInitialized()
     {
-        // ==============================================
-        // INITIALIZING MODEL VALIDATOR
         // Initialize the ModelValidator against the model.
-        // Optionally, you can provide a function to retrieve 
-        // additional values by name.
-        // ==============================================
+        // Optionally, you can provide a function to retrieve additional values by name.
         Calc = new ModelValidator<Mortgage>((name) =>
         {
             if (name == "Mode") return 1;
             return false;
         });
 
-        // ==============================================
-        // RUN INITIAL VISIBILITY & ENABLED RULES
         // Run validation for initial Visibility and Enabled rules
-        // ==============================================
         Calc.Validate(ref Mortgage);
     }
 
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, field) =>
     {
-        // ==============================================
-        // MODEL VALIDATION FUNCTION
         // Pass the model into the Validation function.
         // The model is by reference, meaning values will be 
         // updated based on Calculation rule types.
         //
         // Message keys will return for any Required or Errors.
-        // ==============================================
         Mortgage context = (Mortgage)model;
         Calc.Validate(ref context);
         return Calc[field].MessageKeys;
