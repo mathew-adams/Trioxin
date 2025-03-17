@@ -154,7 +154,7 @@ internal static class Tokenizer
                         var x when x.Equals("CSHORT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CShort),
                         var x when x.Equals("WITHIN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Within),
                         var x when x.Equals("BETWEEN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Between),
-                        _ => new Token(TokenType.Function, operand)
+                        _ => throw new Exception($"Unknown function: {operand}")
                     });
                 }
                 else

@@ -9,35 +9,35 @@ namespace Trioxin;
 internal enum TokenType
 {
     //Types & operators
-    Number,
     Date,
+    Comma,
+    Number,
     String,
     Boolean,
-    Variable,
     Operator,
+    Variable,
     LeftParenthesis,
     RightParenthesis,
-    Comma,
     //Comparables
-    EqualsInsensitive,
     Equals,
-    GreaterThan,
-    GreaterThanOrEqual,
     LessThan,
-    LessThanOrEqual,
     NotEquals,
+    GreaterThan,
+    LessThanOrEqual,
+    EqualsInsensitive,
+    GreaterThanOrEqual,
     //Ranges
-    Between,
-    Within,
     In,
+    Within,
+    Between,
     //Strings
     Len,
-    Right,
     Left,
+    Right,
     //Logic
     If,
-    And,
     Or,
+    And,
     Not,
     //Aggregate
     Min,
@@ -48,13 +48,11 @@ internal enum TokenType
     Abs,
     Round,
     //Conversion
+    CInt,
+    CLong,
     CBool,
     CByte,
-    CInt,
     CShort,
-    CLong,
-    //Generic function
-    Function
 }
 
 internal record class Token(TokenType type, object? Value = null);

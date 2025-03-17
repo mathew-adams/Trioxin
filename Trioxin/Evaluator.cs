@@ -33,10 +33,14 @@ internal static class Evaluator
             var token = tokens.Dequeue();
             switch (token.type)
             {
+                case TokenType.Date:
+                case TokenType.String:
                 case TokenType.Number:
                 case TokenType.Boolean:
-                case TokenType.String:
-                case TokenType.Date: stack.Push(token.Value!); break;
+                    {
+                        stack.Push(token.Value!); 
+                    }
+                    break;
                 case TokenType.Variable:
                     {
                         if (variableResolver == null) throw new Exception("No event for variable value specified");
@@ -58,12 +62,12 @@ internal static class Evaluator
                                         var baseType = Enum.GetUnderlyingType(type);
                                         stack.Push(baseType switch
                                         {
+                                            var x when x == typeof(int) => (int)result,
+                                            var x when x == typeof(uint) => (uint)result,
                                             var x when x == typeof(byte) => (byte)result,
                                             var x when x == typeof(sbyte) => (sbyte)result,
-                                            var x when x == typeof(ushort) => (ushort)result,
                                             var x when x == typeof(short) => (short)result,
-                                            var x when x == typeof(uint) => (uint)result,
-                                            var x when x == typeof(int) => (int)result,
+                                            var x when x == typeof(ushort) => (ushort)result,
                                             _ => result
                                         });
                                     }
@@ -71,17 +75,17 @@ internal static class Evaluator
                                     {
                                         stack.Push(type switch
                                         {
+                                            var x when x == typeof(int) => (int)result,
                                             var x when x == typeof(bool) => (bool)result,
+                                            var x when x == typeof(uint) => (uint)result,
                                             var x when x == typeof(byte) => (byte)result,
+                                            var x when x == typeof(long) => (long)result,
+                                            var x when x == typeof(ulong) => (ulong)result,
+                                            var x when x == typeof(short) => (short)result,
                                             var x when x == typeof(sbyte) => (sbyte)result,
                                             var x when x == typeof(ushort) => (ushort)result,
-                                            var x when x == typeof(short) => (short)result,
-                                            var x when x == typeof(uint) => (uint)result,
-                                            var x when x == typeof(int) => (int)result,
-                                            var x when x == typeof(ulong) => (ulong)result,
-                                            var x when x == typeof(long) => (long)result,
-                                            var x when x == typeof(decimal) => (decimal)result,
                                             var x when x == typeof(double) => (double)result,
+                                            var x when x == typeof(decimal) => (decimal)result,
                                             var x when x == typeof(DateOnly) => (DateOnly)result,
                                             var x when x == typeof(TimeOnly) => (TimeOnly)result,
                                             var x when x == typeof(DateTime) => (DateTime)result,
@@ -102,10 +106,10 @@ internal static class Evaluator
                     }
                     break;
                 case TokenType.Equals:
-                case TokenType.NotEquals:
                 case TokenType.LessThan:
-                case TokenType.LessThanOrEqual:
+                case TokenType.NotEquals:
                 case TokenType.GreaterThan:
+                case TokenType.LessThanOrEqual:
                 case TokenType.GreaterThanOrEqual:
                     {
                         object rightSide = stack.Pop();
@@ -115,10 +119,10 @@ internal static class Evaluator
                             return token.type switch
                             {
                                 TokenType.Equals => left.CompareTo(right) == 0,
-                                TokenType.NotEquals => left.CompareTo(right) != 0,
                                 TokenType.LessThan => left.CompareTo(right) < 0,
-                                TokenType.LessThanOrEqual => left.CompareTo(right) <= 0,
+                                TokenType.NotEquals => left.CompareTo(right) != 0,
                                 TokenType.GreaterThan => left.CompareTo(right) > 0,
+                                TokenType.LessThanOrEqual => left.CompareTo(right) <= 0,
                                 TokenType.GreaterThanOrEqual => left.CompareTo(right) >= 0,
                                 _ => throw new Exception($"Invalid token type: {token.type}")
                             };
@@ -146,15 +150,15 @@ internal static class Evaluator
                             }
                             else
                             {
-                                decimal doubleRight = Convert.ToDecimal(right);
-                                decimal doubleLeft = Convert.ToDecimal(left);
+                                decimal decimalRight = Convert.ToDecimal(right);
+                                decimal decimalLeft = Convert.ToDecimal(left);
                                 stack.Push(token.Value switch
                                 {
-                                    '+' => doubleLeft + doubleRight,
-                                    '-' => doubleLeft - doubleRight,
-                                    '*' => doubleLeft * doubleRight,
-                                    '/' => doubleLeft / doubleRight,
-                                    '^' => Math.Pow((double)doubleLeft, (double)doubleRight),
+                                    '+' => decimalLeft + decimalRight,
+                                    '-' => decimalLeft - decimalRight,
+                                    '*' => decimalLeft * decimalRight,
+                                    '/' => decimalLeft / decimalRight,
+                                    '^' => Math.Pow((double)decimalLeft, (double)decimalRight),
                                     _ => throw new Exception($"Unknown operator: {token.Value}")
                                 });
                             }
@@ -210,12 +214,12 @@ internal static class Evaluator
                         }
                         stack.Push(token.type switch
                         {
+                            TokenType.Or => args.Any(a => a is bool b && b),
                             TokenType.Min => args.Min()!,
                             TokenType.Max => args.Max()!,
-                            TokenType.Avg => args.Average(a => (decimal)a),
                             TokenType.Sum => args.Sum(s => (decimal)s),
+                            TokenType.Avg => args.Average(a => (decimal)a),
                             TokenType.And => args.All(a => a is bool b && b),
-                            TokenType.Or => args.Any(a => a is bool b && b),
                             _ => throw new Exception("Unknown token type")
                         });
                     }
@@ -254,8 +258,8 @@ internal static class Evaluator
                         stack.Push(variable.Length);
                     }
                     break;
-                case TokenType.Right:
                 case TokenType.Left:
+                case TokenType.Right:
                     {
                         var count = Convert.ToInt32(stack.Pop());
                         var term = (string)stack.Pop();
@@ -266,34 +270,24 @@ internal static class Evaluator
                         });
                     }
                     break;
+                case TokenType.CInt:
                 case TokenType.CBool:
                 case TokenType.CByte:
-                case TokenType.CInt:
-                case TokenType.CShort:
                 case TokenType.CLong:
+                case TokenType.CShort:
                     {
                         var result = stack.Pop();
                         stack.Push(token.type switch
                         {
+                            TokenType.CInt => Convert.ToInt32(result),
                             TokenType.CBool => Convert.ToBoolean(result),
                             TokenType.CByte => Convert.ToByte(result),
-                            TokenType.CShort => Convert.ToInt16(result),
-                            TokenType.CInt => Convert.ToInt32(result),
                             TokenType.CLong => Convert.ToInt64(result),
+                            TokenType.CShort => Convert.ToInt16(result),
                             _ => throw new NotImplementedException($"Unknown token type: {token.type}")
                         });
                         break;
                     }
-                case TokenType.Function:
-                    {
-                        string function = (string)token.Value;
-                        if (function.Equals("IF", StringComparison.OrdinalIgnoreCase))
-                        {
-
-                        }
-
-                    }
-                    break;
                 default:
                     throw new Exception($"Unknown type: {token.type}");
             }

@@ -69,7 +69,6 @@ internal class Postfix
             TokenType.Round => true,
             TokenType.Within => true,
             TokenType.Between => true,
-            TokenType.Function => true,
             _ => false
         };
     }
