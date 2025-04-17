@@ -27,7 +27,7 @@ internal static class Tokenizer
         while (!reader.EndOfStream)
         {
             reader.EatWhile(c => char.IsWhiteSpace(c));
-            if (reader.Peek() is null) break;
+            if (reader.Peek() is char.MaxValue) break;
             char current = (char)reader.Peek()!;
             if (char.IsNumber(current))
             {
@@ -43,7 +43,7 @@ internal static class Tokenizer
                 });
 
                 var next = reader.Peek();
-                if (next is not null && char.IsLetterOrDigit(next.Value) && !_specialCharacters.Contains(next.Value))
+                if (next is not char.MaxValue && char.IsLetterOrDigit(next) && !_specialCharacters.Contains(next))
                 {
                     dec += reader.EatWhile(c => char.IsLetterOrDigit(c) || c == '_'); //Handle variable names that begin with a number
                     _tokens.Add(new Token(TokenType.Variable, dec));
@@ -144,15 +144,20 @@ internal static class Tokenizer
                         var x when x.Equals("AVG", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Avg),
                         var x when x.Equals("ABS", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Abs),
                         var x when x.Equals("LEN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Len),
+                        var x when x.Equals("DAY", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Day),
                         var x when x.Equals("LEFT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Left),
                         var x when x.Equals("CINT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CInt),
+                        var x when x.Equals("YEAR", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Year),
                         var x when x.Equals("CBOOL", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CBool),
                         var x when x.Equals("CBYTE", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CByte),
                         var x when x.Equals("CLONG", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CLong),
                         var x when x.Equals("RIGHT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Right),
+                        var x when x.Equals("MONTH", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Month),
                         var x when x.Equals("ROUND", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Round),
+                        var x when x.Equals("ISNULL", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.IsNull),
                         var x when x.Equals("CSHORT", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.CShort),
                         var x when x.Equals("WITHIN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Within),
+                        var x when x.Equals("NEWDATE", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.NewDate),
                         var x when x.Equals("BETWEEN", StringComparison.OrdinalIgnoreCase) => new Token(TokenType.Between),
                         _ => throw new Exception($"Unknown function: {operand}")
                     });

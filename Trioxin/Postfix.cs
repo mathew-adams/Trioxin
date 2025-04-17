@@ -41,8 +41,8 @@ internal class Postfix
         return type switch
         {
             TokenType.In => true,
-            TokenType.And => true,
             TokenType.Or => true,
+            TokenType.And => true,
             TokenType.Max => true,
             TokenType.Min => true,
             TokenType.Avg => true,
@@ -56,18 +56,23 @@ internal class Postfix
         return type switch
         {
             TokenType.If => true,
+            TokenType.Day => true,
             TokenType.Not => true,
             TokenType.Abs => true,
             TokenType.Len => true,
             TokenType.Left => true,
+            TokenType.Year => true,
             TokenType.CInt => true,
             TokenType.Right => true,
             TokenType.CBool => true,
+            TokenType.Month => true,
             TokenType.CByte => true,
-            TokenType.CLong => true,
-            TokenType.CShort => true,
             TokenType.Round => true,
+            TokenType.CLong => true,
+            TokenType.IsNull => true,
+            TokenType.CShort => true,
             TokenType.Within => true,
+            TokenType.NewDate => true,
             TokenType.Between => true,
             _ => false
         };

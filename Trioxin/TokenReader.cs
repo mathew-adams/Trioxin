@@ -9,15 +9,15 @@ namespace Trioxin;
 public class TokenReader(string input)
 {
     private int _position = 0;
-    public char? Peek()
+    public char Peek()
     {
-        if (_position >= input.Length) return null;
+        if (_position >= input.Length) return char.MaxValue;
         return input[_position];
     }
 
-    public char? Read()
+    public char Read()
     {
-        if (_position > input.Length) return null;
+        if (_position > input.Length) return char.MaxValue;
         return input[_position++];
     }
 

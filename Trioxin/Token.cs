@@ -19,6 +19,7 @@ internal enum TokenType
     LeftParenthesis,
     RightParenthesis,
     //Comparables
+    IsNull,
     Equals,
     LessThan,
     NotEquals,
@@ -53,6 +54,11 @@ internal enum TokenType
     CBool,
     CByte,
     CShort,
+    //Dates
+    Year,
+    Month,
+    Day,
+    NewDate
 }
 
 internal record class Token(TokenType type, object? Value = null);

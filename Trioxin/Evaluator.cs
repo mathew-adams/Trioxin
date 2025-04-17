@@ -38,7 +38,7 @@ internal static class Evaluator
                 case TokenType.Number:
                 case TokenType.Boolean:
                     {
-                        stack.Push(token.Value!); 
+                        stack.Push(token.Value!);
                     }
                     break;
                 case TokenType.Variable:
@@ -56,42 +56,49 @@ internal static class Evaluator
                             default:
                                 {
                                     var result = variableResolver.Invoke(variable);
-                                    var type = result.GetType();
-                                    if (type.IsEnum)
+                                    if (result is null)
                                     {
-                                        var baseType = Enum.GetUnderlyingType(type);
-                                        stack.Push(baseType switch
-                                        {
-                                            var x when x == typeof(int) => (int)result,
-                                            var x when x == typeof(uint) => (uint)result,
-                                            var x when x == typeof(byte) => (byte)result,
-                                            var x when x == typeof(sbyte) => (sbyte)result,
-                                            var x when x == typeof(short) => (short)result,
-                                            var x when x == typeof(ushort) => (ushort)result,
-                                            _ => result
-                                        });
+                                        stack.Push(null);
                                     }
                                     else
                                     {
-                                        stack.Push(type switch
+                                        var type = result.GetType();
+                                        if (type is not null && type.IsEnum)
                                         {
-                                            var x when x == typeof(int) => (int)result,
-                                            var x when x == typeof(bool) => (bool)result,
-                                            var x when x == typeof(uint) => (uint)result,
-                                            var x when x == typeof(byte) => (byte)result,
-                                            var x when x == typeof(long) => (long)result,
-                                            var x when x == typeof(ulong) => (ulong)result,
-                                            var x when x == typeof(short) => (short)result,
-                                            var x when x == typeof(sbyte) => (sbyte)result,
-                                            var x when x == typeof(ushort) => (ushort)result,
-                                            var x when x == typeof(double) => (double)result,
-                                            var x when x == typeof(decimal) => (decimal)result,
-                                            var x when x == typeof(DateOnly) => (DateOnly)result,
-                                            var x when x == typeof(TimeOnly) => (TimeOnly)result,
-                                            var x when x == typeof(DateTime) => (DateTime)result,
-                                            var x when x == typeof(Guid) => (Guid)result,
-                                            _ => result
-                                        });
+                                            var baseType = Enum.GetUnderlyingType(type);
+                                            stack.Push(baseType switch
+                                            {
+                                                var x when x == typeof(int) => (int)result,
+                                                var x when x == typeof(uint) => (uint)result,
+                                                var x when x == typeof(byte) => (byte)result,
+                                                var x when x == typeof(sbyte) => (sbyte)result,
+                                                var x when x == typeof(short) => (short)result,
+                                                var x when x == typeof(ushort) => (ushort)result,
+                                                _ => result
+                                            });
+                                        }
+                                        else
+                                        {
+                                            stack.Push(type switch
+                                            {
+                                                var x when x == typeof(int) => (int)result,
+                                                var x when x == typeof(bool) => (bool)result,
+                                                var x when x == typeof(uint) => (uint)result,
+                                                var x when x == typeof(byte) => (byte)result,
+                                                var x when x == typeof(long) => (long)result,
+                                                var x when x == typeof(ulong) => (ulong)result,
+                                                var x when x == typeof(short) => (short)result,
+                                                var x when x == typeof(sbyte) => (sbyte)result,
+                                                var x when x == typeof(ushort) => (ushort)result,
+                                                var x when x == typeof(double) => (double)result,
+                                                var x when x == typeof(decimal) => (decimal)result,
+                                                var x when x == typeof(DateOnly) => (DateOnly)result,
+                                                var x when x == typeof(TimeOnly) => (TimeOnly)result,
+                                                var x when x == typeof(DateTime) => (DateTime)result,
+                                                var x when x == typeof(Guid) => (Guid)result,
+                                                _ => result
+                                            });
+                                        }
                                     }
                                 }
                                 break;
@@ -129,6 +136,12 @@ internal static class Evaluator
                         }));
                     }
                     break;
+                case TokenType.IsNull:
+                    {
+                        var result = stack.Pop();
+                        stack.Push(result is null);
+                        break;
+                    }
                 case TokenType.Operator:
                     {
                         if (stack.Count == 1 && stack.Peek() is decimal dec)
@@ -286,6 +299,29 @@ internal static class Evaluator
                             TokenType.CShort => Convert.ToInt16(result),
                             _ => throw new NotImplementedException($"Unknown token type: {token.type}")
                         });
+                        break;
+                    }
+                case TokenType.Month:
+                case TokenType.Day:
+                case TokenType.Year:
+                    {
+                        var result = Convert.ToDateTime(stack.Pop());
+                        stack.Push(token.type switch
+                        {
+                            TokenType.Day => result.Day,
+                            TokenType.Month => result.Month,
+                            TokenType.Year => result.Year,
+                            _ => throw new NotImplementedException($"Unknown token type: {token.type}")
+                        });
+                        break;
+                    }
+                case TokenType.NewDate:
+                    {
+                        var day = Convert.ToInt32(stack.Pop());
+                        var month = Convert.ToInt32(stack.Pop());
+                        var year = Convert.ToInt32(stack.Pop());
+                        
+                        stack.Push(new DateTime(year, month, day));
                         break;
                     }
                 default:
